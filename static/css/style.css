@@ -1,0 +1,43 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+#reservation-form {
+    margin-bottom: 20px;
+}
+
+#coach-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+#coach-svg {
+    width: 100%;
+    height: auto;
+}
+
+.seat {
+    stroke: #000;
+    stroke-width: 1;
+    cursor: pointer;
+}
+
+.seat.available {
+    fill: #90EE90;
+}
+
+.seat.reserved {
+    fill: #FF6347;
+}
+
+#reservation-result {
+    margin-top: 20px;
+    font-weight: bold;
+}
