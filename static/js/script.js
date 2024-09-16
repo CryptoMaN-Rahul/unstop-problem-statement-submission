@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const coachSvg = document.getElementById('coach-svg');
     const numSeatsInput = document.getElementById('num-seats');
+    const prioritySelect = document.getElementById('priority');
     const reserveBtn = document.getElementById('reserve-btn');
     const reservationResult = document.getElementById('reservation-result');
+    const reservationInfo = document.getElementById('reservation-info');
 
     const seatWidth = 30;
     const seatHeight = 30;
@@ -55,6 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 seats = data;
+                const availableSeats = seats.filter(seat => !seat.is_reserved).length;
+                const reservedSeats = seats.filter(seat => seat.is_reserved).length;
+                reservationInfo.innerHTML = `
+                    <p>Total seats: ${seats.length}</p>
+                    <p>Available seats: ${availableSeats}</p>
+                    <p>Reserved seats: ${reservedSeats}</p>
+                `;
                 seats.forEach(seat => {
                     const seatElement = document.querySelector(`[data-seat-number="${seat.seat_number}"]`);
                     if (seatElement) {
@@ -66,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function reserveSeats() {
         const numSeats = parseInt(numSeatsInput.value);
+        const priority = prioritySelect.value;
         if (numSeats < 1 || numSeats > 7) {
             alert('Please enter a number between 1 and 7');
             return;
@@ -76,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ num_seats: numSeats }),
+            body: JSON.stringify({ num_seats: numSeats, priority: priority }),
         })
             .then(response => response.json())
             .then(data => {
@@ -89,8 +99,19 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
+    function resetDatabase() {
+        fetch('/api/reset', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                updateSeats();
+                reservationResult.textContent = 'Database reset. Some seats are now pre-booked.';
+            })
+            .catch(error => console.error('Error resetting database:', error));
+    }
+
     createCoachLayout();
-    updateSeats();
+    resetDatabase();  // Call this function when the page loads
 
     reserveBtn.addEventListener('click', reserveSeats);
 });

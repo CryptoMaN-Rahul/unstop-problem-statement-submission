@@ -8,5 +8,8 @@ CREATE TABLE seats (
 );
 
 -- Insert 80 seats
-INSERT INTO seats (seat_number)
-SELECT generate_series(1, 80);
+INSERT INTO seats (seat_number, is_reserved)
+SELECT generate_series(1, 80), FALSE;
+
+-- Pre-book some seats (for testing purposes)
+UPDATE seats SET is_reserved = TRUE WHERE seat_number IN (5, 10, 15, 20, 25);

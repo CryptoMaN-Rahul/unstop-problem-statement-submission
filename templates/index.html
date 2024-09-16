@@ -11,8 +11,15 @@
     <div id="reservation-form">
         <label for="num-seats">Number of seats (1-7):</label>
         <input type="number" id="num-seats" min="1" max="7" value="1">
+        <label for="priority">Priority:</label>
+        <select id="priority">
+            <option value="default">Default</option>
+            <option value="comfort">Comfort</option>
+            <option value="together">Together</option>
+        </select>
         <button id="reserve-btn">Reserve Seats</button>
     </div>
+    <div id="reservation-info"></div>
     <div id="coach-container">
         <svg id="coach-svg" viewBox="0 0 800 600"></svg>
     </div>
